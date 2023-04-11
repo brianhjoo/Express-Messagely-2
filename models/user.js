@@ -43,8 +43,8 @@ class User {
         [username]
     );
 
-    const hash = result.rows[0].password;
-
+    const hash = result.rows[0]?.password;
+    if (!hash) throw new NotFoundError("Invalid username/password!")
     return (await bcrypt.compare(password, hash) === true);
   }
 
