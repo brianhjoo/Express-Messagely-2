@@ -7,6 +7,8 @@ const Router = require("express").Router;
 const router = new Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+
+
 /** POST /login: {username, password} => {token} */
 router.post("/login", async function (req, res, next) {
   if (!("username" in req.body) || !("password" in req.body))
@@ -25,6 +27,7 @@ router.post("/login", async function (req, res, next) {
   return res.json({ token });
 });
 
+
 /** POST /register: registers, logs in, and returns token.
  *
  * {username, password, first_name, last_name, phone} => {token}.
@@ -41,15 +44,14 @@ router.post("/register", async function (req, res, nest) {
   const validRequest = registerFields.every((field) => req.body[field]);
   if (!validRequest) throw new BadRequestError("Invalid request body!");
 
-  //TODO: just pass in req.body?
   const { username, password, first_name, last_name, phone } = req.body;
-  const user = await User.register(
+  const user = await User.register({
     username,
     password,
     first_name,
     last_name,
-    phone
-  );
+    phone,
+  });
 
   let payload = { username: user.username };
   const token = jwt.sign(payload, SECRET_KEY);

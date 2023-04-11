@@ -74,7 +74,7 @@ class User {
         ORDER BY username`
     );
 
-    const allUsers = result.rows; //doublecheck each row is {username:, ...}
+    const allUsers = result.rows;
 
     return allUsers;
   }
